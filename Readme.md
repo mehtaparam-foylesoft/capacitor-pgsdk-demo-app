@@ -1,10 +1,12 @@
-#Cashfree PG Capacitor Demo App
+# Cashfree PG Capacitor Demo App
 This demo app illustrates integration of [cashfree-pg-capacitor](https://www.npmjs.com/package/cashfree-pg-capacitor) sdk in a ionic capacitor application following the documentation [here](https://docs.cashfree.com/docs/capacitor-sdk).
 
-##Environment
+## Environment
 For setting up capacitor environment refer [here](https://capacitorjs.com/docs/getting-started/environment-setup)
 
-##Setup
+---
+
+## Setup
 Enter the following command in your shell.
 ### Step 1 (Clone the Repo)
 ```shell
@@ -19,18 +21,22 @@ npm install
 ionic cap sync
 ```
 
-##Configure the App
+---
+
+
+## Configure the App
 * navigate to <code>src/app/home</code> and open <code>home.page.ts</code>
 <p align="center">
   <img src="screenshots/api-keys.png" alt="setting-api-keys" />
 </p>
 
-* Replace **appId** and **appSecret** with the credentials from your Cashfree's account PG dashboard.
+* Replace <code>appId</code> and <code>appSecret</code> with the credentials from your Cashfree's account PG dashboard.
 
-* Set the **env** as per the environment from where the credentials are used ( 'TEST' or 'PROD' ).
+* Set the <code>env</code> as per the environment from where the credentials are used ( 'TEST' or 'PROD' ).
 
+---
 
-##Installing The App
+## Installing The App
 ### Android
 To install the app in android run the following command.
 
