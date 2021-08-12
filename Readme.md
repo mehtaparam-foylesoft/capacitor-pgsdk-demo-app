@@ -19,6 +19,17 @@ npm install
 ionic cap sync
 ```
 
+##Configure the App
+* navigate to <code>src/app/home</code> and open <code>home.page.ts</code>
+<p align="center">
+  <img src="screenshots/api-keys.png" alt="setting-api-keys" />
+</p>
+
+* Replace **appId** and **appSecret** with the credentials from your Cashfree's account PG dashboard.
+
+* Set the **env** as per the environment from where the credentials are used ( 'TEST' or 'PROD' ).
+
+
 ##Installing The App
 ### Android
 To install the app in android run the following command.
