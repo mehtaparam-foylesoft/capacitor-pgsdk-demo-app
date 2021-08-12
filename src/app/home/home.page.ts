@@ -8,7 +8,7 @@ const UPI = 'UPI';
 const appId = '--app-id-here--'; //Enter your appId here;
 const appSecret = '--app-secret-here--'; //Enter your appSecret here (not to be used in your production app. use this in your backend api instead).
 
-const env = 'PROD'; //'TEST' or 'PROD'
+const env = 'TEST'; //'TEST' or 'PROD'
 
 @Component({
   selector: 'app-home',
