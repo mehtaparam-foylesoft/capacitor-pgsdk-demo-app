@@ -2,5 +2,5 @@
 	"appId": "io.ionic.starter",
 	"appName": "pg-capacitor-demo-app",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": true
 }

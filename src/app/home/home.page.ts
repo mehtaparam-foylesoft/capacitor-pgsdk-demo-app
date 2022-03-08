@@ -60,9 +60,9 @@ export class HomePage implements AfterViewInit {
       return Promise.resolve(map);
 
     } catch (error) {
-      console.error(error.status);
-      console.error(error.error); // Error message as string
-      console.error(error.headers);
+      console.log(error.status);
+      console.log(error.error); // Error message as string
+      console.log(error.headers);
       return  Promise.reject(error);
     }
   }
