@@ -1,12 +1,11 @@
-import {AfterViewInit, Component, ViewEncapsulation} from '@angular/core';
-import {CFPaymentServiceInstance} from 'cashfree-pg-capacitor';
-import { HTTP } from '@ionic-native/http/ngx';
+import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
+import { CFPaymentServiceInstance } from 'cashfree-pg-capacitor';
+import { CashFreeService } from '../services/cashfree.service';
+import { environment } from 'src/environments/environment';
 
 const WEB = 'WEB';
 const UPI = 'UPI';
 
-const appId = '--app-id-here--'; //Enter your appId here;
-const appSecret = '--app-secret-here--'; //Enter your appSecret here (not to be used in your production app. use this in your backend api instead).
 
 const env = 'TEST'; //'TEST' or 'PROD'
 
@@ -18,11 +17,9 @@ const env = 'TEST'; //'TEST' or 'PROD'
 })
 export class HomePage implements AfterViewInit {
 
-  private http: HTTP;
 
-  constructor() {
-    this.http = new HTTP();
-    this.http.setDataSerializer('json');
+  constructor(private cashFreeService: CashFreeService) {
+
   }
 
   ngAfterViewInit(): void {
@@ -37,7 +34,7 @@ export class HomePage implements AfterViewInit {
       const orderID = 'Order' + parseInt((100000000 * Math.random()).toString(), 10);
       map.set('orderId', orderID);
       // @ts-ignore
-      const url = (env === 'PROD')? 'https://api.cashfree.com/api/v2/cftoken/order' : 'https://test.cashfree.com/api/v2/cftoken/order';
+      const url = (env === 'PROD') ? 'https://api.cashfree.com/api/v2/cftoken/order' : 'https://test.cashfree.com/api/v2/cftoken/order';
       const params = {
         // eslint-disable-next-line
         "orderId": orderID,
@@ -46,24 +43,19 @@ export class HomePage implements AfterViewInit {
         // eslint-disable-next-line
         "orderCurrency": "INR"
       };
-      const headers = {
-        'x-client-id': appId,
-        'x-client-secret': appSecret,
-      };
 
-      const response = await this.http.post(url, params, headers);
-
-      map.set('token', JSON.parse(response.data).cftoken);
-      console.log(response.status);
-      console.log(JSON.parse(response.data)); // JSON data returned by server
-      console.log(response.headers);
-      return Promise.resolve(map);
-
+      const sub = this.cashFreeService.httpCall(url, params).subscribe((data) => {
+        sub.unsubscribe();
+        console.log('data', data);
+        //map.set('token', response?.cftoken);
+        return Promise.resolve(map);
+      });
     } catch (error) {
+      console.error(error);
       console.log(error.status);
       console.log(error.error); // Error message as string
       console.log(error.headers);
-      return  Promise.reject(error);
+      return Promise.reject(error);
     }
   }
 
@@ -74,7 +66,7 @@ export class HomePage implements AfterViewInit {
 
       const map = new Map<string, string>();
 
-      map.set('appId', appId);
+      map.set('appId', environment.cashFreeClientID);
       map.set('orderId', tokenMap.get('orderId'));
       map.set('orderCurrency', 'INR');
       map.set('orderAmount', '1');
@@ -82,9 +74,7 @@ export class HomePage implements AfterViewInit {
       map.set('customerName', 'Cashfree Test Customer');
       map.set('customerPhone', '9999999999');
       map.set('customerEmail', 'cashfreeTest@cashfree.com');
-
       map.set('notifyUrl', 'https://www.yourwebhook.com');
-
       map.set('tokenData', tokenMap.get('token'));
       map.set('stage', env);
 
@@ -130,8 +120,12 @@ export class HomePage implements AfterViewInit {
       </div>`;
   }
 
-  private startPayment(mode: string, upiAppId: string) {
+  private async startPayment(mode: string, upiAppId: string) {
     document.getElementById('response_text').innerHTML = 'Response will Show Here';
+
+    //  await this.getParams();
+
+
     this.getParams().then((params) => {
       if (mode === WEB) {
         CFPaymentServiceInstance.startPaymentWEB(params).then(this.onResult).catch(this.onError);
@@ -178,12 +172,12 @@ export class HomePage implements AfterViewInit {
   private changeUPIArray(array: string[]) {
     document.getElementById('upi_icon_containers').innerHTML =
       array.reduce((prevValue, currentValue, index, arrays) => prevValue.concat(currentValue));
-    const elements =  document.getElementsByClassName('round_icon_buttons');
+    const elements = document.getElementsByClassName('round_icon_buttons');
     for (let i = 0; i < elements.length; i++) {
       const element = elements.item(i);
       element.addEventListener('click', () => {
-         this.startPaymentUPI(element.id);
-       });
+        this.startPaymentUPI(element.id);
+      });
     }
   }
 }
