@@ -48,7 +48,7 @@ export class HomePage implements AfterViewInit {
         sub.unsubscribe();
         console.log('data', data);
         //map.set('token', response?.cftoken);
-        return Promise.resolve(map);
+        Promise.resolve(map);
       });
     } catch (error) {
       console.error(error);
